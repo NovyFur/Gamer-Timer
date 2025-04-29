@@ -1,0 +1,398 @@
+/* Gamer Timer CSS with lightning blue, lime green, and black theme */
+:root {
+    --lightning-blue: #00a8ff;
+    --lime-green: #39ff14;
+    --black: #121212;
+    --dark-gray: #1e1e1e;
+    --light-gray: #333333;
+    --text-color: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--lightning-blue);
+    padding-bottom: 15px;
+}
+
+h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--lightning-blue);
+    text-shadow: 0 0 10px rgba(0, 168, 255, 0.7), 0 0 20px rgba(0, 168, 255, 0.5);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--dark-gray);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    background-color: var(--dark-gray);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tab-btn:hover {
+    background-color: var(--light-gray);
+    color: var(--lime-green);
+}
+
+.tab-btn.active {
+    background-color: var(--black);
+    color: var(--lime-green);
+    border-bottom: 3px solid var(--lime-green);
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+}
+
+/* Tab Content */
+.tab-content {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Timer List */
+.timer-list {
+    margin-bottom: 20px;
+    min-height: 300px;
+}
+
+.timer-item {
+    background-color: var(--black);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid var(--lightning-blue);
+    box-shadow: 0 0 10px rgba(0, 168, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.timer-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 168, 255, 0.5);
+}
+
+.timer-item.flashing {
+    animation: flash 0.5s infinite alternate;
+}
+
+@keyframes flash {
+    from {
+        background-color: var(--black);
+    }
+    to {
+        background-color: #ff0000;
+    }
+}
+
+.timer-info {
+    flex: 1;
+}
+
+.timer-name {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--lightning-blue);
+}
+
+.timer-time {
+    font-size: 1.8rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    color: var(--lime-green);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.timer-btn {
+    background-color: var(--dark-gray);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.timer-btn:hover {
+    background-color: var(--light-gray);
+}
+
+.timer-btn.start {
+    background-color: var(--lime-green);
+    color: var(--black);
+}
+
+.timer-btn.start:hover {
+    background-color: #2be60d;
+}
+
+.timer-btn.pause {
+    background-color: #ffc107;
+    color: var(--black);
+}
+
+.timer-btn.reset {
+    background-color: #ff5722;
+    color: var(--black);
+}
+
+.timer-btn.overlay {
+    background-color: var(--lightning-blue);
+    color: var(--black);
+}
+
+.timer-btn.delete {
+    background-color: #f44336;
+    color: var(--black);
+}
+
+/* Add Timer Button */
+.add-timer-btn {
+    background-color: var(--lime-green);
+    color: var(--black);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+}
+
+.add-timer-btn:hover {
+    background-color: #2be60d;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.7);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 30px rgba(0, 168, 255, 0.7);
+    position: relative;
+    border: 1px solid var(--lightning-blue);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.close-modal:hover {
+    color: var(--lime-green);
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    color: var(--lightning-blue);
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--light-gray);
+    background-color: var(--black);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--lightning-blue);
+    box-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox label {
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+
+.submit-btn {
+    background-color: var(--lime-green);
+    color: var(--black);
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+    background-color: #2be60d;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+}
+
+/* Overlay Window Styles */
+.overlay-container {
+    background-color: rgba(18, 18, 18, 0.8);
+    border: 2px solid var(--lightning-blue);
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    -webkit-app-region: drag;
+}
+
+.overlay-timer-name {
+    color: var(--lightning-blue);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.overlay-timer-time {
+    color: var(--lime-green);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+}
+
+.overlay-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    -webkit-app-region: no-drag;
+}
+
+.overlay-opacity-control {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    -webkit-app-region: no-drag;
+}
+
+.overlay-opacity-slider {
+    width: 80px;
+    -webkit-app-region: no-drag;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tabs {
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        border-radius: 0;
+    }
+    
+    .timer-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .timer-controls {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Overlay</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+        /* Make the overlay draggable */
+        .overlay-container {
+            -webkit-app-region: drag;
+        }
+        /* Make controls non-draggable */
+        .overlay-controls,
+        .overlay-opacity-control,
+        button,
+        input {
+            -webkit-app-region: no-drag;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay-container">
+        <div class="overlay-timer-name" id="overlay-name">Timer Name</div>
+        <div class="overlay-timer-time" id="overlay-time">00:00:00</div>
+        <div class="overlay-controls">
+            <button class="timer-btn start" id="overlay-toggle">Start</button>
+            <button class="timer-btn reset" id="overlay-reset">Reset</button>
+        </div>
+        <div class="overlay-opacity-control">
+            <input type="range" class="overlay-opacity-slider" id="opacity-slider" min="0.2" max="1" step="0.1" value="0.8">
+        </div>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const nameElement = document.getElementById("overlay-name");
+        const timeElement = document.getElementById("overlay-time");
+        const toggleButton = document.getElementById("overlay-toggle");
+        const resetButton = document.getElementById("overlay-reset");
+        const opacitySlider = document.getElementById("opacity-slider");
+        const overlayContainer = document.querySelector(".overlay-container");
+        
+        // State variables
+        let timerId = null;
+        let isRunning = false;
+        let hasFlashEffect = false;
+        
+        // Set up listener for updates from main process
+        window.api.onOverlayUpdate((data) => {
+            console.log("Overlay received update:", data);
+            
+            // Store the timer ID for control actions
+            timerId = data.timerId;
+            
+            // Update name if provided
+            if (data.name) {
+                nameElement.textContent = data.name;
+            }
+            
+            // Update time display
+            if (data.remainingTime !== undefined) {
+                timeElement.textContent = formatTime(data.remainingTime);
+            }
+            
+            // Update running state and button appearance
+            if (data.isRunning !== undefined) {
+                isRunning = data.isRunning;
+                updateToggleButton();
+            }
+            
+            // Store flash setting if provided
+            if (data.flash !== undefined) {
+                hasFlashEffect = data.flash;
+            }
+            
+            // Handle flashing effect
+            if (data.remainingTime <= 0 && hasFlashEffect) {
+                overlayContainer.classList.add("flashing");
+            } else {
+                overlayContainer.classList.remove("flashing");
+            }
+        });
+        
+        // Update opacity when slider changes
+        opacitySlider.addEventListener("input", () => {
+            const opacity = parseFloat(opacitySlider.value);
+            // Send opacity change to main process
+            window.api.setOverlayOpacity({ 
+                windowId: window.electronWindowId, // This might need to be set by main process
+                opacity: opacity 
+            });
+        });
+        
+        // Toggle timer button click handler
+        toggleButton.addEventListener("click", () => {
+            if (timerId) {
+                window.api.overlayToggleTimer(timerId);
+                // Don't update UI here - wait for the update from main process
+            }
+        });
+        
+        // Reset timer button click handler
+        resetButton.addEventListener("click", () => {
+            if (timerId) {
+                window.api.overlayResetTimer(timerId);
+                // Don't update UI here - wait for the update from main process
+            }
+        });
+        
+        // Helper function to update toggle button appearance
+        function updateToggleButton() {
+            if (isRunning) {
+                toggleButton.textContent = "Pause";
+                toggleButton.classList.remove("start");
+                toggleButton.classList.add("pause");
+            } else {
+                toggleButton.textContent = "Start";
+                toggleButton.classList.remove("pause");
+                toggleButton.classList.add("start");
+            }
+        }
+        
+        // Format time function (same as in renderer.js for consistency)
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            let timeString = "";
+            if (days > 0) {
+                timeString += `${days}d `;
+            }
+            timeString += `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            return timeString;
+        }
+    </script>
+</body>
+</html>
