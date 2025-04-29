@@ -1,0 +1,44 @@
+{
+  "name": "gamer-timer",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "A feature-rich timer application for gaming",
+  "devDependencies": {
+    "electron": "^36.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "electron-store": "^10.0.1"
+  },
+  "build": {
+    "appId": "com.example.gamertimer",
+    "productName": "Gamer Timer",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.png" 
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
